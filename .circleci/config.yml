@@ -6,7 +6,7 @@ jobs:
       - image: cimg/node:17.2.0
     steps:
       - checkout
-      - run echo "hello world"
+      - run: echo "hello world"
 
 workflows:
   example-workflow:
