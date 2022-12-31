@@ -158,7 +158,8 @@ jobs:
             apk add --update ansible
       - run:
           name: print inventory.txt
-          cat inventory.txt
+          command: |
+            cat inventory.txt
       - run:
           name: Configure server
           command: |
