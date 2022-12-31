@@ -141,7 +141,7 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
-            - .circleci/ansible/inventory.txt
+            - project/.circleci/ansible/inventory.txt
       # Here's where you will add some code to rollback on failure      
 
   configure-infrastructure:
@@ -160,7 +160,7 @@ jobs:
       - run:
           name: print inventory.txt
           command: |
-            cat inventory.txt
+            cat ~/inventory.txt
       - run:
           name: Configure server
           command: |
