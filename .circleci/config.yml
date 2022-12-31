@@ -11,9 +11,13 @@ commands:
           when: on_fail
           command: |
             # Your code here
-            echo "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+            aws cloudformation delete-stack --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
             #exit 1
-
+  print_inventory_file:
+    description: Print ansible inventory file
+    steps:
+      - run:
+          cat .circleci/ansible/inventory.txt
 jobs:
   build-frontend:
     docker:
@@ -131,7 +135,8 @@ jobs:
       - run:
           name: Add back-end ip to ansible inventory
           command: |
-            aws ec2 describe-addresses --public-ips > .circleci/ansible/inventory.txt
+            aws ec2 describe-addresses --query "Reservations[*].Instances[*].[PublicIpAddress]" >> .circleci/ansible/inventory.txt
+      - print_inventory_file
       - persist_to_workspace:
           root: ~/
           paths:
