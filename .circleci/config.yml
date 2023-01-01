@@ -272,8 +272,7 @@ jobs:
             npm install
             npm run build
             cd ..
-            echo "pwd=${pwd}"
-            tar -C backend -cvzf artifact.tar.gz
+            tar -C backend -cvzf artifact.tar.gz .
             cd .circleci/ansible
             echo "displaying inventory file"
             cat inventory.txt
