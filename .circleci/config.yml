@@ -14,6 +14,24 @@ commands:
             aws cloudformation delete-stack --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
             aws cloudformation delete-stack --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
             #exit 1
+  revert-migrations:
+    description: Revert the last migration if successfully run in the current workflow.
+    parameters:
+      # Add parameter here     
+    steps:
+      - run:
+          name: Revert migrations
+          # Add when this will run
+          command: |
+            # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
+            curl -k https://kvdb.io/CgMyGtBLcMBMB6TVxrZq8L/migration_${CIRCLE_WORKFLOW_ID:0:7} > SUCCESS
+            if(( $SUCCESS==1 )); 
+            then
+              cd ~/project/backend
+              npm install
+              # Add revert code here. You can find this in the Getting Started section.
+              npm run migrations:revert
+            fi
   print_inventory_file:
     description: Print ansible inventory file
     steps:
@@ -167,25 +185,6 @@ jobs:
           command: |
             ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/configure-server.yml
       # Here's where you will add some code to rollback on failure      
-
-  revert-migrations:
-    description: Revert the last migration if successfully run in the current workflow.
-    parameters:
-      # Add parameter here     
-    steps:
-      - run:
-          name: Revert migrations
-          # Add when this will run
-          command: |
-            # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-            curl -k https://kvdb.io/CgMyGtBLcMBMB6TVxrZq8L/migration_${CIRCLE_WORKFLOW_ID:0:7} > SUCCESS
-            if(( $SUCCESS==1 )); 
-            then
-              cd ~/project/backend
-              npm install
-              # Add revert code here. You can find this in the Getting Started section.
-              npm run migrations:revert
-            fi
 
   run-migrations:
     docker:
