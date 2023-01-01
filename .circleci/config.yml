@@ -22,7 +22,7 @@ commands:
 jobs:
   build-frontend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: circleci/node:14.18.1
     steps:
       - checkout
       - restore_cache:
@@ -39,7 +39,7 @@ jobs:
 
   build-backend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: circleci/node:14.18.1
     steps:
       - checkout
       - restore_cache:
@@ -56,7 +56,7 @@ jobs:
   
   test-frontend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: circleci/node:14.18.1
     steps:
       - checkout
       - restore_cache:
@@ -70,7 +70,7 @@ jobs:
   
   test-backend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: circleci/node:14.18.1
     steps:
       - checkout
       - restore_cache:
@@ -84,7 +84,7 @@ jobs:
 
   scan-frontend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: circleci/node:14.18.1
     steps:
       - checkout
       - restore_cache:
@@ -99,7 +99,7 @@ jobs:
 
   scan-backend:
     docker:
-      - image:  circleci/node:13.8.0
+      - image:  circleci/node:14.18.1
     steps:
       - checkout
       - restore_cache:
@@ -169,7 +169,7 @@ jobs:
       # Here's where you will add some code to rollback on failure      
   run-migrations:
     docker:
-      - image: circleci/node:13.8.0
+      - image: circleci/node:14.18.1
     steps:
       - checkout
       - restore_cache:
@@ -188,7 +188,7 @@ jobs:
           command: |
             if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
             then
-              curl https://kvdb.io/CgMyGtBLcMBMB6TVxrZq8L/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
+              curl -sk https://kvdb.io/CgMyGtBLcMBMB6TVxrZq8L/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
             fi
       - destroy-environment
      # Here's where you will add some code to rollback on failure      
