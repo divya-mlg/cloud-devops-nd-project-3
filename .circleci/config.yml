@@ -163,7 +163,7 @@ jobs:
           name: Add back-end ip to ansible inventory
           command: |
             aws ec2 describe-instances --query "Reservations[*].Instances[*].PublicIpAddress" \
-              --filters "Name=tag:project,Values=udapeople" --output=text >> .circleci/ansible/inventory.txt
+              --filters "Name=tag:project,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --output=text >> .circleci/ansible/inventory.txt
       - print_inventory_file
       - persist_to_workspace:
           root: ~/
@@ -240,7 +240,7 @@ jobs:
           command: |
             # your code here
             export BACKEND_IP=$(aws ec2 describe-instances --query "Reservations[*].Instances[*].PublicIpAddress" \
-              --filters "Name=tag:project,Values=udapeople" --output=text)
+              --filters "Name=tag:project,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --output=text)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "API_URL = ${API_URL}"
             echo API_URL="http://${BACKEND_IP}:3030" > frontend/.env
@@ -311,13 +311,13 @@ jobs:
           command: |
             # your code here
             export BACKEND_IP=$(aws ec2 describe-instances --query "Reservations[*].Instances[*].PublicIpAddress" \
-              --filters "Name=tag:project,Values=udapeople" --output=text)
+              --filters "Name=tag:project,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --output=text)
       - run:
           name: Backend smoke test.
           command: |
             # your code here
             export BACKEND_IP=$(aws ec2 describe-instances --query "Reservations[*].Instances[*].PublicIpAddress" \
-              --filters "Name=tag:project,Values=udapeople" --output=text)
+              --filters "Name=tag:project,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --output=text)
             echo "BACKEND_IP=${BACKEND_IP}"
             export API_URL="http://${BACKEND_IP}:3030"
             echo "API_URL=${API_URL}"
