@@ -407,6 +407,9 @@ jobs:
           name: Remove old stacks and files
           command: |
             #if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
+            echo "------OldWorkflowID=${OldWorkflowID}"
+            export OldWorkflowID=$(cat OldWorkflowID.txt)
+            echo "------OldWorkflowID=${OldWorkflowID}"
             if [[ "${CIRCLE_WORKFLOW_ID:0:7}" != "${OldWorkflowID}" ]]
             then
               # your code here
