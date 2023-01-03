@@ -63,7 +63,7 @@
     "swagger-ui-express": "^4.1.4",
     "typeorm": "^0.2.24",
     "uuid": "^3.4.0",
-    "winston-loggly-bulk": "^2.0.3",
+    "winston-loggly-bulk": "^3.0.0",
     "winston-slack-webhook": "^0.1.6"
   },
   "devDependencies": {
