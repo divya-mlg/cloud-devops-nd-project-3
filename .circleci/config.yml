@@ -188,7 +188,7 @@ jobs:
           command: |
             if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
             then
-              curl -sk https://kvdb.io/CgMyGtBLcMBMB6TVxrZq8L/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
+              curl -sk https://kvdb.io/CgMyGtBLcMBMB6TVxrZq8L/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d "1"
             fi
       - destroy-environment
      # Here's where you will add some code to rollback on failure      
@@ -201,8 +201,10 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            yum install -y python3
-            yum install -y ansible 
+            sudo apt update
+            sudo apt install -y python3
+            sudo apt install -y ansible
+            sudo apt install -y awscli
       - run:
           name: Get backend url
           command: |
@@ -216,7 +218,8 @@ jobs:
           name: Deploy frontend objects
           command: |
             # your code here
-            exit 1
+            echo "nothing yet"
+            exit 0
       # Here's where you will add some code to rollback on failure      
 
 workflows:
