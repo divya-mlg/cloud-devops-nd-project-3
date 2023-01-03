@@ -368,7 +368,7 @@ jobs:
           command: |
             # your code here
             aws cloudformation deploy --template-file .circleci/files/cloudfront.yml \
-              --stack-name project3-initial-stack --parameter-overrides WorkflowID="udapeople-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --stack-name project3-initial-stack --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" \
               --tags project=udapeople
       - persist_to_workspace:
           root: ~/
