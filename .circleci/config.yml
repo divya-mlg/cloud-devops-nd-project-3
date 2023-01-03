@@ -356,7 +356,7 @@ jobs:
           name: Install dependencies
           command: |
             # your code here
-            echo "install dependencies here"
+            yum -y install tar gzip curl
       - run:
           name: Get OldWorkflowID before updating
           command: |
