@@ -1,2 +1,0 @@
-url01 : https://github.com/divya-mlg/cloud-devops-nd-project-3
-url02 : http://udapeople-904f4a0.s3.amazonaws.com/index.html or http://d3ez36q31vntk3.cloudfront.net
