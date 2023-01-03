@@ -1,0 +1,49 @@
+---
+- name: Upgrade Packages
+  become: true
+  apt:
+    upgrade: "yes"
+
+- name: Install Dependent Packages
+  become: true
+  apt:
+    name: ["nodejs", "npm"]
+    state: latest
+    update_cache: yes
+
+- name: Install pm2
+  become: true
+  npm:
+    name: pm2
+    global: yes
+    production: yes
+    state: present
+
+- name: Create a folder for backend
+  file:
+    path: /home/ubuntu/backend
+    state: directory
+  
+- name: Copy backend files to the remote
+  copy:
+    src: /root/project/artifact.tar.gz
+    dest: /home/ubuntu/backend/artifact.tar.gz
+
+- name: Extract files from the archive
+  shell: |
+    cd /home/ubuntu/backend
+    tar -xvzf artifact.tar.gz
+
+- name: Compile
+  become: true
+  shell: |
+    cd /home/ubuntu/backend
+    npm install
+    npm run build
+
+- name: Start the server
+  shell: |
+    cd /home/ubuntu/backend
+    pm2 start npm --name backend -- start
+
+

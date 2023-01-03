@@ -11,6 +11,7 @@ commands:
           when: on_fail
           command: |
             # Your code here
+            aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
             aws cloudformation delete-stack --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
             aws cloudformation delete-stack --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
             #exit 1
@@ -22,9 +23,10 @@ commands:
       - run:
           name: Revert migrations
           # Add when this will run
+          when: on_fail
           command: |
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-            curl -k https://kvdb.io/CgMyGtBLcMBMB6TVxrZq8L/migration_${CIRCLE_WORKFLOW_ID:0:7} > SUCCESS
+            SUCCESS=$(curl -sk https://kvdb.io/CgMyGtBLcMBMB6TVxrZq8L/migration_${CIRCLE_WORKFLOW_ID:0:7})
             if(( $SUCCESS==1 )); 
             then
               cd ~/project/backend
@@ -245,6 +247,39 @@ jobs:
       - destroy-environment
       - revert-migrations
       # Here's where you will add some code to rollback on failure      
+  deploy-backend:
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints: f0:88:5e:44:07:f3:ca:b5:f1:82:ae:b0:e7:11:48:18
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update ansible
+            apk add --update python3 py3-pip
+            pip3 install --upgrade pip
+            pip3 install awscli
+            apk add --update tar gzip
+            apk add --update nodejs npm
+      - run:
+          name: Deploy backend
+          command: |
+            cd backend
+            npm install
+            npm run build
+            cd ..
+            echo "pwd=${pwd}"
+            tar -C backend -cvzf artifact.tar.gz
+            cd .circleci/ansible
+            echo "displaying inventory file"
+            cat inventory.txt
+            ansible-playbook -i inventory.txt deploy-backend.yml
+      # Here's where you will add some code to rollback on failure
+      - destroy-environment  
 
 workflows:
   default:
@@ -267,4 +302,6 @@ workflows:
       - run-migrations:
           requires: [configure-infrastructure]          
       - deploy-frontend:
+          requires: [run-migrations]
+      - deploy-backend:
           requires: [run-migrations]
