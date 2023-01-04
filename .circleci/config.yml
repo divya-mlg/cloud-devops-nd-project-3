@@ -46,7 +46,7 @@ commands:
 jobs:
   build-frontend:
     docker:
-      - image: circleci/node:14.18.1
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - restore_cache:
@@ -63,7 +63,7 @@ jobs:
 
   build-backend:
     docker:
-      - image: circleci/node:14.18.1
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - restore_cache:
@@ -80,7 +80,7 @@ jobs:
   
   test-frontend:
     docker:
-      - image: circleci/node:14.18.1
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - restore_cache:
@@ -94,7 +94,7 @@ jobs:
   
   test-backend:
     docker:
-      - image: circleci/node:14.18.1
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - restore_cache:
@@ -108,7 +108,7 @@ jobs:
 
   scan-frontend:
     docker:
-      - image: circleci/node:14.18.1
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - restore_cache:
@@ -119,12 +119,12 @@ jobs:
             cd frontend
             npm install
             npm audit fix --audit-level=critical --force
-            #npm audit fix
-            #npm audit --audit-level=critical
+            npm audit fix --force
+            npm audit --audit-level=critical
 
   scan-backend:
     docker:
-      - image:  circleci/node:14.18.1
+      - image:  circleci/node:13.8.0
     steps:
       - checkout
       - restore_cache:
@@ -135,8 +135,8 @@ jobs:
             cd backend
             npm install
             npm audit fix --audit-level=critical --force
-            #npm audit fix
-            #npm audit --audit-level=critical
+            npm audit fix --force
+            npm audit --audit-level=critical
   deploy-infrastructure:
     docker:
       - image: amazon/aws-cli
@@ -196,7 +196,7 @@ jobs:
 
   run-migrations:
     docker:
-      - image: circleci/node:14.18.1
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - restore_cache:
@@ -225,7 +225,7 @@ jobs:
 
   deploy-frontend:
     docker:
-      - image: circleci/node:14.18.1
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - run:
